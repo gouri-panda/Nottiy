@@ -22,7 +22,6 @@ public abstract class NoteDatabase extends RoomDatabase {
                     .addCallback(callback)
                     .fallbackToDestructiveMigration().build();
         }
-
         return instance;
     }
     private static RoomDatabase.Callback callback = new RoomDatabase.Callback() {
@@ -32,17 +31,14 @@ public abstract class NoteDatabase extends RoomDatabase {
             new PopulateDataAsyncTask(instance).execute();
         }
     };
-
-        private static class PopulateDataAsyncTask extends AsyncTask<Void, Void, Void> {
+    private static class PopulateDataAsyncTask extends AsyncTask<Void, Void, Void> {
             private NoteDao noteDao;
-
             private PopulateDataAsyncTask(NoteDatabase noteDatabase) {
                 this.noteDao = noteDatabase.noteDao();
             }
-
             @Override
             protected Void doInBackground(Void... voids) {
-                noteDao.insert(new Note("title1", "description1", 1));
+                noteDao.insert(new Note("title1djfjdkfjkdklfjjfjjdkjfkdjjdkfjdljfkldfjkldjfkldjfkldjkjfkldklfkldjkfjjdkf", "description1", 1));
                 noteDao.insert(new Note("title2", "description2", 2));
                 noteDao.insert(new Note("title3", "description3", 3));
                 noteDao.insert(new Note("title4", "description4", 4));

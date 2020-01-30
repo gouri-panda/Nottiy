@@ -5,9 +5,13 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class NoteRepository {
+    List<String> stringList= new ArrayList<>();
+    LinkedList<String> list = new LinkedList<>();
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
     public NoteRepository(Application application){
@@ -17,7 +21,6 @@ public class NoteRepository {
     }
     public void insert(Note note){
         new InsertAsyncTask(noteDao).execute(note);
-
     }
     public void update(Note note){
         new UpdateAsyncTask(noteDao).execute(note);
