@@ -21,6 +21,7 @@ public class AddNoteActivity extends AppCompatActivity {
     public static final String STRING_TITLE = "title";
     public static final String STRING_DESCRIPTION = "descripiton";
     public static final String STRING_PRIORITY = "priority";
+    public static final String STRING_ID = "id";
 
 
     @Override
@@ -34,7 +35,19 @@ public class AddNoteActivity extends AppCompatActivity {
         numberPicker.setMaxValue(10);
         numberPicker.setMinValue(1);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        setTitle("Add Note");
+        Intent intent = getIntent();
+        if (intent.hasExtra(STRING_ID)){
+            setTitle("Edit note");
+            editTextTitle.setText(intent.getStringExtra(STRING_TITLE));
+            editTextDescription.setText(intent.getStringExtra(STRING_DESCRIPTION));
+            numberPicker.setValue(intent.getIntExtra(STRING_PRIORITY, 1));
+
+        }else {
+
+
+            setTitle("Add Note");
+        }
+
 
 
     }
@@ -68,7 +81,12 @@ public class AddNoteActivity extends AppCompatActivity {
         intent.putExtra(STRING_TITLE, title);
         intent.putExtra(STRING_DESCRIPTION, description);
         intent.putExtra(STRING_PRIORITY, priority);
-        Toast.makeText(AddNoteActivity.this, "putted", Toast.LENGTH_SHORT).show();
+
+        int id = getIntent().getIntExtra(STRING_ID, -1);
+        if (id != -1){
+            intent.putExtra(STRING_ID, id);
+        }
+
         setResult(RESULT_OK, intent);
         finish();
     }
