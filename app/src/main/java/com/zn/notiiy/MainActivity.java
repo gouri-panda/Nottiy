@@ -4,19 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,10 +39,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView =findViewById(R.id.recycler_view);
         createNote = findViewById(R.id.floating_action_button);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setHasFixedSize(true);
         noteAdapter = new NoteAdapter();
         recyclerView.setAdapter(noteAdapter);
+        //Added animation 😃
+        Animation animation = AnimationUtils.loadAnimation(this,R.anim.recycler_view_animation);
+        recyclerView.setAnimation(animation);
 
         noteViewModel = ViewModelProviders.of(this)
                 .get(NoteViewModel.class);
@@ -89,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public synchronized   void setNoteViewModel(){
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.delete_all_note:
-                noteViewModel.deletAll();
+                noteViewModel.deleteAll();
                 Toast.makeText(MainActivity.this, "All message deleted", Toast.LENGTH_LONG).show();
                 return true;
                 default:
@@ -121,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         }else if ( requestCode == REQUEST_EDIT_CODE && resultCode  == RESULT_OK){
             int id = data.getIntExtra(AddNoteActivity.STRING_ID, -1);
             if (id == -1){
-                Toast.makeText(MainActivity.this, "Cann't update note", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Can n't update note", Toast.LENGTH_LONG).show();
             }
             String title = data.getStringExtra(AddNoteActivity.STRING_TITLE);
             String descripiton = data.getStringExtra(AddNoteActivity.STRING_DESCRIPTION);
@@ -134,5 +141,15 @@ public class MainActivity extends AppCompatActivity {
         else {
             Toast.makeText(MainActivity.this, "Note not saved", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
 }
