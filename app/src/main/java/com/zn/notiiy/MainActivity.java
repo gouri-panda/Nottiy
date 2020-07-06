@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView =findViewById(R.id.recycler_view);
         createNote = findViewById(R.id.floating_action_button);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         noteAdapter = new NoteAdapter();
         recyclerView.setAdapter(noteAdapter);
